@@ -25,22 +25,28 @@ public class SwipeAction: ContextualAction {
     }
 
     func contextualAction(forRow: BaseRow) -> ContextualAction {
-        var action: ContextualAction
         if #available(iOS 11, *){
-            action = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ [weak self] action, view, completion -> Void in
+            let action = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ [weak self] action, view, completion -> Void in
                 guard let strongSelf = self else{ return }
                 strongSelf.handler(strongSelf, forRow, completion)
             }
+            
+            action.backgroundColor = self.backgroundColor ?? action.backgroundColor
+            action.image = self.image ?? action.image
+            
+            return action
+            
         } else {
-            action = UITableViewRowAction(style: style.contextualStyle as! UITableViewRowActionStyle,title: title){ [weak self] (action, indexPath) -> Void in
+            let action = UITableViewRowAction(style: style.contextualStyle as! UITableViewRowActionStyle,title: title){ [weak self] (action, indexPath) -> Void in
                 guard let strongSelf = self else{ return }
                 strongSelf.handler(strongSelf, forRow, nil)
             }
+            
+            action.backgroundColor = self.backgroundColor ?? action.backgroundColor
+            action.image = self.image ?? action.image
+            
+            return action
         }
-        action.backgroundColor = self.backgroundColor ?? action.backgroundColor
-        action.image = self.image ?? action.image
-        
-        return action
     }
 	
     public enum Style{
