@@ -26,7 +26,7 @@ public class SwipeAction: ContextualAction {
 
     func contextualAction(forRow: BaseRow) -> ContextualAction {
         if #available(iOS 11, *){
-            let action = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ [weak self] action, view, completion -> Void in
+            let action = UIContextualAction(style: style.contextualStyle as! UIContextualAction.Style, title: title){ [weak self] _, view, completion -> Void in
                 guard let strongSelf = self else{ return }
                 strongSelf.handler(strongSelf, forRow, completion)
             }
@@ -37,15 +37,15 @@ public class SwipeAction: ContextualAction {
             return action
             
         } else {
-            let action = UITableViewRowAction(style: style.contextualStyle as! UITableViewRowActionStyle,title: title){ [weak self] (action, indexPath) -> Void in
+            let _action = UITableViewRowAction(style: style.contextualStyle as! UITableViewRowActionStyle,title: title){ [weak self] (_, indexPath) -> Void in
                 guard let strongSelf = self else{ return }
                 strongSelf.handler(strongSelf, forRow, nil)
             }
             
-            action.backgroundColor = self.backgroundColor ?? action.backgroundColor
-            action.image = self.image ?? action.image
+            _action.backgroundColor = self.backgroundColor ?? _action.backgroundColor
+            _action.image = self.image ?? action.image
             
-            return action
+            return _action
         }
     }
 	
